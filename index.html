@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Tic-Tac-Toe | VOSC Activity-1</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="terminal-container">
+    
+    <!-- START / SETUP SCREEN -->
+    <section id="start-screen" class="screen active">
+      <header class="game-header">
+        <div class="terminal-badge">VOSC ACTIVITY-1 // GRID LOCKDOWN</div>
+        <h1 class="main-title">CYBER<br>TIC-TAC-TOE</h1>
+        <p class="tagline">"Who gets control of the grid?"</p>
+      </header>
+
+      <div class="intro-box">
+        <p>Pick your side, take your turns, and lock down three cells in a row.</p>
+      </div>
+
+      <div class="setup-group">
+        <label class="setup-label">1. SELECT GAME MODE</label>
+        <div class="btn-group" role="radiogroup" aria-label="Game Mode">
+          <button type="button" class="option-btn active" data-mode="friend" id="mode-friend">
+            👥 PLAY WITH FRIEND
+          </button>
+          <button type="button" class="option-btn" data-mode="computer" id="mode-computer">
+            🤖 PLAY VS COMPUTER
+          </button>
+        </div>
+      </div>
+
+      <div class="setup-group">
+        <label class="setup-label">2. CHOOSE YOUR SIDE</label>
+        <div class="btn-group" role="radiogroup" aria-label="Player Side">
+          <button type="button" class="option-btn active node-btn" data-side="NODE" id="side-node">
+            ⚡ NODE (X)
+          </button>
+          <button type="button" class="option-btn firewall-btn" data-side="FIREWALL" id="side-firewall">
+            🛡️ FIREWALL (O)
+          </button>
+        </div>
+      </div>
+
+      <button type="button" id="start-btn" class="primary-btn">
+        [ START GAME ]
+      </button>
+    </section>
+
+
+    <!-- GAMEPLAY SCREEN -->
+    <section id="game-screen" class="screen">
+      <header class="game-header compact">
+        <h1 class="game-title">CYBER TIC-TAC-TOE</h1>
+        <div class="symbols-indicator">
+          <span class="symbol-tag node-tag">⚡ NODE: <strong>X</strong></span>
+          <span class="divider">|</span>
+          <span class="symbol-tag firewall-tag">🛡️ FIREWALL: <strong>O</strong></span>
+        </div>
+      </header>
+
+      <!-- STATUS & BANNER -->
+      <div class="status-panel">
+        <div id="turn-display" class="turn-display">
+          TURN: <span id="current-player-text" class="node-highlight">⚡ NODE (X)</span>
+        </div>
+        <div id="status-message" class="status-message">
+          Grid initialized. Make your move.
+        </div>
+      </div>
+
+      <!-- 3x3 TIC-TAC-TOE BOARD -->
+      <main class="board-wrapper">
+        <div class="board" id="board" role="grid" aria-label="Tic-Tac-Toe Grid">
+          <button type="button" class="cell" data-index="0" data-coord="A1" aria-label="Cell A1"></button>
+          <button type="button" class="cell" data-index="1" data-coord="A2" aria-label="Cell A2"></button>
+          <button type="button" class="cell" data-index="2" data-coord="A3" aria-label="Cell A3"></button>
+          <button type="button" class="cell" data-index="3" data-coord="B1" aria-label="Cell B1"></button>
+          <button type="button" class="cell" data-index="4" data-coord="B2" aria-label="Cell B2"></button>
+          <button type="button" class="cell" data-index="5" data-coord="B3" aria-label="Cell B3"></button>
+          <button type="button" class="cell" data-index="6" data-coord="C1" aria-label="Cell C1"></button>
+          <button type="button" class="cell" data-index="7" data-coord="C2" aria-label="Cell C2"></button>
+          <button type="button" class="cell" data-index="8" data-coord="C3" aria-label="Cell C3"></button>
+        </div>
+      </main>
+
+      <!-- SCOREBOARD -->
+      <section class="score-panel" aria-label="Game Scores">
+        <div class="score-card node-card">
+          <span class="score-title">⚡ NODE</span>
+          <span class="score-count" id="score-node">0</span>
+        </div>
+        <div class="score-card draw-card">
+          <span class="score-title">DRAWS</span>
+          <span class="score-count" id="score-draws">0</span>
+        </div>
+        <div class="score-card firewall-card">
+          <span class="score-title">🛡️ FIREWALL</span>
+          <span class="score-count" id="score-firewall">0</span>
+        </div>
+      </section>
+
+      <!-- ACTION CONTROLS -->
+      <div class="controls-panel">
+        <button type="button" id="new-round-btn" class="control-btn">
+          [ NEW ROUND ]
+        </button>
+        <button type="button" id="reset-score-btn" class="control-btn warning-btn">
+          [ RESET SCORE ]
+        </button>
+        <button type="button" id="change-mode-btn" class="control-btn subtle-btn">
+          ⚙️ SETUP
+        </button>
+      </div>
+
+      <!-- SYSTEM LOG -->
+      <section class="system-log-section">
+        <div class="log-header">
+          <span>SYSTEM LOG</span>
+          <span class="log-indicator">● LIVE</span>
+        </div>
+        <ul id="log-list" class="log-list">
+          <li>&gt; System initialized.</li>
+          <li>&gt; Ready for input.</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- CONFIRMATION MODAL FOR RESET SCORE -->
+    <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-box">
+        <div class="modal-badge">SECURITY PROMPT</div>
+        <h2 id="modal-title" class="modal-heading">Reset all scores?</h2>
+        <p class="modal-text">All recorded round victories and draws will be wiped clean.</p>
+        <div class="modal-actions">
+          <button type="button" id="confirm-yes-btn" class="modal-btn confirm">
+            [ YES, RESET ]
+          </button>
+          <button type="button" id="confirm-cancel-btn" class="modal-btn cancel">
+            [ CANCEL ]
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="terminal-footer">
+      <span>CYBER TIC-TAC-TOE // VOSC ACTIVITY-1</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
